@@ -62,9 +62,11 @@ Object oSelectLiga is a cWebView
                 Send NavigatePath
             End_Procedure
 
-            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
-                Move True to NavigateData.bReadOnly
-            End_Procedure
+           Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+    Move True to NavigateData.bReadOnly
+
+    
+End_Procedure
 
         End_Object 
 

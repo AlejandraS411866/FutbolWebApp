@@ -151,25 +151,34 @@ Object oZoomLiga is a cWebView
     End_Procedure
 
     Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
-        Case Begin
-            Case (NavigateData.eNavigateType = nfFromMain)
-                // If from main, this is a propbably a main file Select to Zoom.
-                Case Break
 
-            Case (NavigateData.eNavigateType = nfFromParent)
-                // If from parent, this is a constrained drill down.
-                Case Break
+   // Send ShowInfoBox ("OnNavigateForward en ZoomLiga" * ;
+     //                 "InvokingView: " + String(hoInvokingView) * ;
+       //               "InvokingObject: " + String(hoInvokingObject))
 
-            Case (NavigateData.eNavigateType = nfFromChild)
-                // If from child, this is a probably a parent Zoom from a Zoom.
-                Case Break
+    Case Begin
+        Case (NavigateData.eNavigateType = nfFromMain)
+            // If from main, this is probably a main file Select to Zoom.
+//            Send ShowInfoBox "Tipo navegación: nfFromMain"
+            Case Break
 
-            Case Else // must be nfUndefined
+        Case (NavigateData.eNavigateType = nfFromParent)
+            // If from parent, this is a constrained drill down.
+  //          Send ShowInfoBox "Tipo navegación: nfFromParent"
+            Case Break
 
-        Case End
+        Case (NavigateData.eNavigateType = nfFromChild)
+            // If from child, this is probably a parent Zoom from a Zoom.
+    //        Send ShowInfoBox "Tipo navegación: nfFromChild"
+            Case Break
 
-        Send SetActionButtons
+        Case Else // must be nfUndefined
+      //      Send ShowInfoBox "Tipo navegación: nfUndefined"
 
-    End_Procedure
+    Case End
+
+    Send SetActionButtons
+
+End_Procedure
 
 End_Object 

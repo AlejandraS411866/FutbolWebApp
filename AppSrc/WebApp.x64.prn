@@ -1,5 +1,5 @@
 Compiling Program: C:\DataFlex Projects\FutbolWebApp\AppSrc\WebApp.src
-Memory Available: 12930093056
+Memory Available: 9981173760
 1>Use AllWebAppClasses.pkg
 Using pre-compiled package ALLWEBAPPCLASSES.PKG
 Including file: AllWebAppClasses.x64.pkd    (C:\Program Files\DataFlex 25.0\Pkg\AllWebAppClasses.x64.pkd)
@@ -3237,9 +3237,11 @@ Including file: SelectLiga.wo    (C:\DataFlex Projects\FutbolWebApp\AppSrc\Selec
 38797>>>                Send NavigatePath
 38798>>>            End_Procedure
 38799>>>
-38799>>>            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
-38802>>>                Move True to NavigateData.bReadOnly
-38803>>>            End_Procedure
+38799>>>           Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+38802>>>    Move True to NavigateData.bReadOnly
+38803>>>
+38803>>>    
+38803>>>End_Procedure
 38804>>>
 38804>>>        End_Object 
 38805>>>
@@ -3497,26 +3499,35 @@ Including file: ZoomLiga.wo    (C:\DataFlex Projects\FutbolWebApp\AppSrc\ZoomLig
 39010>>>    End_Procedure
 39011>>>
 39011>>>    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
-39014>>>        Case Begin
-39014>>>            Case (NavigateData.eNavigateType = nfFromMain)
-39016>>>                // If from main, this is a propbably a main file Select to Zoom.
-39016>>>                Case Break
+39014>>>
+39014>>>   // Send ShowInfoBox ("OnNavigateForward en ZoomLiga" * ;
+39014>>>     //                 "InvokingView: " + String(hoInvokingView) * ;
+39014>>>       //               "InvokingObject: " + String(hoInvokingObject))
+39014>>>
+39014>>>    Case Begin
+39014>>>        Case (NavigateData.eNavigateType = nfFromMain)
+39016>>>            // If from main, this is probably a main file Select to Zoom.
+39016>>>//            Send ShowInfoBox "Tipo navegación: nfFromMain"
+39016>>>            Case Break
 39017>>>
-39017>>>            Case (NavigateData.eNavigateType = nfFromParent)
-39020>>>                // If from parent, this is a constrained drill down.
-39020>>>                Case Break
+39017>>>        Case (NavigateData.eNavigateType = nfFromParent)
+39020>>>            // If from parent, this is a constrained drill down.
+39020>>>  //          Send ShowInfoBox "Tipo navegación: nfFromParent"
+39020>>>            Case Break
 39021>>>
-39021>>>            Case (NavigateData.eNavigateType = nfFromChild)
-39024>>>                // If from child, this is a probably a parent Zoom from a Zoom.
-39024>>>                Case Break
+39021>>>        Case (NavigateData.eNavigateType = nfFromChild)
+39024>>>            // If from child, this is probably a parent Zoom from a Zoom.
+39024>>>    //        Send ShowInfoBox "Tipo navegación: nfFromChild"
+39024>>>            Case Break
 39025>>>
-39025>>>            Case Else // must be nfUndefined
+39025>>>        Case Else // must be nfUndefined
+39025>>>      //      Send ShowInfoBox "Tipo navegación: nfUndefined"
 39025>>>
-39025>>>        Case End
+39025>>>    Case End
 39025>>>
-39025>>>        Send SetActionButtons
+39025>>>    Send SetActionButtons
 39026>>>
-39026>>>    End_Procedure
+39026>>>End_Procedure
 39027>>>
 39027>>>End_Object 
 39028>    Set phoDefaultView to oDashboard
@@ -3526,7 +3537,7 @@ Including file: ZoomLiga.wo    (C:\DataFlex Projects\FutbolWebApp\AppSrc\ZoomLig
 39030>Send StartWebApp of oWebApp
 39031>
 Summary
-Memory Available: 12918222848
+Memory Available: 9956765696
 Total Warnings : 0
 Total Errors   : 0
 Total Symbols  : 25603

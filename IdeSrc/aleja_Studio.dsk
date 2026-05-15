@@ -7,7 +7,7 @@ GroupCount=1
 HorizontalGroups=1
 [TabGroup0]
 GroupSize=40
-SelectedTab=2
+SelectedTab=3
 [Window0]
 Filename=C:\DataFlex Projects\FutbolWebApp\AppSrc\WebApp.src
 ViewType=1
@@ -31,24 +31,24 @@ CursorColumn=18
 TabIndex=1
 TabGroup=0
 [Window2]
-Filename=C:\DataFlex Projects\FutbolWebApp\AppSrc\SelectEquipo.wo
+Filename=C:\DataFlex Projects\FutbolWebApp\AppSrc\ZoomJugador.wo
 ViewType=1
 Top=21
 Left=0
 Bottom=684
 Right=841
-CursorLine=106
-CursorColumn=40
-TabIndex=3
+CursorLine=14
+CursorColumn=21
+TabIndex=2
 TabGroup=0
 [Window3]
-Filename=C:\DataFlex Projects\FutbolWebApp\AppSrc\ZoomLiga.wo
+Filename=C:\DataFlex Projects\FutbolWebApp\AppSrc\SelectPosicion.wo
 ViewType=1
 Top=21
 Left=0
 Bottom=684
 Right=841
-CursorLine=85
-CursorColumn=0
-TabIndex=2
+CursorLine=88
+CursorColumn=38
+TabIndex=3
 TabGroup=0

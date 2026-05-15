@@ -11,6 +11,8 @@ Use cWebForm.pkg
 Use cligaDataDictionary.dd
 Use cequipoDataDictionary.dd
 Use cjugadorDataDictionary.dd
+Use cWebButton.pkg
+Use SelectPosicion.wo
 
 Object oZoomJugador is a cWebView
     Set piColumnCount to 12
@@ -103,6 +105,26 @@ Object oZoomJugador is a cWebView
                 Send NavigatePath
             End_Procedure
         End_Object 
+        
+        
+        Object oPosicionesBtn is a cWebButton
+    Set piColumnSpan to 4
+    Set piColumnIndex to 0
+    Set psCaption to "Ver posiciones"
+
+    WebRegisterPath ntNavigateForward oSelectPosicion
+
+    Procedure OnClick
+        Send NavigatePath
+    End_Procedure
+
+    Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+        Move True to NavigateData.bReadOnly
+    End_Procedure
+End_Object
+        
+        
+        
     End_Object 
 
     Object oActionGroup is a cWebMenuGroup

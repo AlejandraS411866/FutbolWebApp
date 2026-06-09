@@ -12,8 +12,6 @@ Object oWebApp is a cWebApp
     Set psTheme to "Df_Material"
     Set peAlignView to alignCenter
     
-    // It is important to set this so that all views will default
-    // to drill down style views.
     Set peApplicationStyle to wvsDrillDown   
     Set peApplicationStateMode to asmHistoryAndUrls 
     Set psEncryptPassword to "ae`cFbp)/?2:zI6=0/0)yK0<LdW:p3j,]&<KyCU`"
@@ -60,7 +58,7 @@ Object oWebApp is a cWebApp
 
                         Procedure OnClick
                             Forward Send OnClick
-                                Send NavigatePath
+                            Send NavigatePath
                         End_Procedure
                     End_Object
 
@@ -71,7 +69,7 @@ Object oWebApp is a cWebApp
 
                         Procedure OnClick
                             Forward Send OnClick
-                                Send NavigatePath
+                            Send NavigatePath
                         End_Procedure
                     End_Object
 
@@ -82,7 +80,7 @@ Object oWebApp is a cWebApp
 
                         Procedure OnClick
                             Forward Send OnClick
-                                Send NavigatePath
+                            Send NavigatePath
                         End_Procedure
                     End_Object
 
@@ -93,7 +91,7 @@ Object oWebApp is a cWebApp
 
                         Procedure OnClick
                             Forward Send OnClick
-                                Send NavigatePath
+                            Send NavigatePath
                         End_Procedure
                     End_Object
 
@@ -104,9 +102,10 @@ Object oWebApp is a cWebApp
 
                         Procedure OnClick
                             Forward Send OnClick
-                                Send NavigatePath
+                            Send NavigatePath
                         End_Procedure
                     End_Object
+
                 End_Object
 
                 Object oSignOut_itm is a cWebMenuItem
@@ -143,7 +142,7 @@ Object oWebApp is a cWebApp
                 
                 Get TopViewHandle of oViewStack to hoTop
                 Get GetDefaultView to hoDflt
-                Move (hoTop=0 or hoTop=hoDflt) to bTop
+                Move (hoTop = 0 or hoTop = hoDflt) to bTop
                 
                 WebSet pbRender of oBackButton to (not(bTop) and eMode >= rmMobile)
                 WebSet pbRender of oMenuButton to (bTop or eMode < rmMobile)
@@ -167,7 +166,6 @@ Object oWebApp is a cWebApp
 
             Object oMainActions is a cWebActionBar
                 Set psGroupName to "MainActions"
-
                 Set piColumnSpan to 0
                 Set peAlign to alignRight
             End_Object
@@ -183,21 +181,29 @@ Object oWebApp is a cWebApp
 
     End_Object    
 
+
     Use SessionManager.wo
     Use Login.wo
     Use WebResourceManager.wo
-    
+
     Use Dashboard.wo
+
     Use SelectEntrenador.wo
     Use ZoomEntrenador.wo
+
     Use SelectJugador.wo
     Use ZoomJugador.wo
+    Use SelectJugadorPosicion.wo
+
     Use SelectPosicion.wo
     Use ZoomPosicion.wo
+
     Use SelectEquipo.wo
     Use ZoomEquipo.wo
+
     Use SelectLiga.wo
     Use ZoomLiga.wo
+
     Set phoDefaultView to oDashboard
 
 End_Object

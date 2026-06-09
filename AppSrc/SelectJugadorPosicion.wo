@@ -1,0 +1,240 @@
+﻿// C:\DataFlex Projects\FutbolWebApp\AppSrc\SelectJugadorPosicion.wo
+// SelectJugadorPosicion
+//
+
+Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebButton.pkg
+Use cWebList.pkg
+Use cWebColumn.pkg
+Use NameValuePairFunctions.pkg
+
+Use cposicionDataDictionary.dd
+Use cjugadorposicionDataDictionary.dd
+
+
+Object oSelectJugadorPosicion is a cWebView
+    Set piColumnCount to 12
+    Set psCaption to "Posiciones del jugador"
+    Set peWebViewStyle to wvsDrilldown
+    Set peViewType to vtZoom
+    Set pbShowCaption to True
+    Set piMaxWidth to 1024
+
+    { WebProperty=Server }
+    Property Integer piJugadorActual 0
+
+
+    Object oposicionTodas_DD is a cposicionDataDictionary
+    End_Object
+
+
+    Object oposicionJugador_DD is a cposicionDataDictionary
+    End_Object
+
+
+    Object ojugadorposicion_DD is a cjugadorposicionDataDictionary
+        Set DDO_Server to oposicionJugador_DD
+
+        Procedure OnConstrain
+            Integer iJugadorID
+
+            WebGet piJugadorActual of oSelectJugadorPosicion to iJugadorID
+
+            If (iJugadorID > 0) Begin
+                Constrain jugadorposicion.JugadorID EQ iJugadorID
+            End
+            Else Begin
+                Constrain jugadorposicion.JugadorID EQ -1
+            End
+        End_Procedure
+    End_Object
+
+
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 12
+        WebSetResponsive piColumnCount rmMobile to 4
+
+
+        Object oListaTodasPosiciones is a cWebList
+            Set Server to oposicionTodas_DD
+            Set piColumnSpan to 6
+            Set piColumnIndex to 0
+            Set psCaption to "Todas las posiciones"
+            Set pbDataAware to True
+            Set piOrdering to 1
+
+            Object oColTodasPosicionesID is a cWebColumn
+                Entry_Item posicion.ID
+                Set psCaption to "ID"
+                Set piWidth to 80
+            End_Object
+
+            Object oColTodasPosicionesNombre is a cWebColumn
+                Entry_Item posicion.Nombre
+                Set psCaption to "Posición"
+                Set piWidth to 250
+            End_Object
+        End_Object
+
+
+        Object oListaPosicionesJugador is a cWebList
+            Set Server to ojugadorposicion_DD
+            Set piColumnSpan to 6
+            Set piColumnIndex to 6
+            Set psCaption to "Posiciones de este jugador"
+            Set pbDataAware to True
+            Set piOrdering to 1
+
+            Object oColJugadorPosicionID is a cWebColumn
+                Entry_Item jugadorposicion.ID
+                Set psCaption to "ID"
+                Set piWidth to 80
+            End_Object
+
+            Object oColJugadorPosicionNombre is a cWebColumn
+                Entry_Item posicion.Nombre
+                Set psCaption to "Posición"
+                Set piWidth to 250
+            End_Object
+        End_Object
+
+
+        Object oBtnAnadirPosicion is a cWebButton
+            Set piColumnSpan to 3
+            Set piColumnIndex to 0
+            Set psCaption to "Añadir posición"
+
+            Procedure OnClick
+                Integer iJugadorID
+                Integer iPosicionID
+                Boolean bExiste
+
+                WebGet piJugadorActual of oSelectJugadorPosicion to iJugadorID
+                Get Field_Current_Value of oposicionTodas_DD Field posicion.ID to iPosicionID
+
+                If (iJugadorID = 0) Begin
+                    Send UserError "No hay ningún jugador seleccionado."
+                    Procedure_Return
+                End
+
+                If (iPosicionID = 0) Begin
+                    Send UserError "Selecciona una posición de la lista de la izquierda."
+                    Procedure_Return
+                End
+
+                Get ExisteRelacion iJugadorID iPosicionID to bExiste
+
+                If (bExiste) Begin
+                    Send UserError "Este jugador ya tiene esa posición asignada."
+                    Procedure_Return
+                End
+
+                Clear jugadorposicion
+                Move iJugadorID  to jugadorposicion.JugadorID
+                Move iPosicionID to jugadorposicion.PosicionID
+                SaveRecord jugadorposicion
+
+                Send RefrescarPosicionesJugador
+            End_Procedure
+        End_Object
+
+
+        Object oBtnBorrarPosicion is a cWebButton
+            Set piColumnSpan to 3
+            Set piColumnIndex to 3
+            Set psCaption to "Borrar posición"
+
+            Procedure OnClick
+                Integer iJugadorPosicionID
+
+                Get Field_Current_Value of ojugadorposicion_DD Field jugadorposicion.ID to iJugadorPosicionID
+
+                If (iJugadorPosicionID = 0) Begin
+                    Send UserError "Selecciona una posición de la lista de la derecha."
+                    Procedure_Return
+                End
+
+                Clear jugadorposicion
+                Move iJugadorPosicionID to jugadorposicion.ID
+                Find EQ jugadorposicion by 1
+
+                If (Found) Begin
+                    Delete jugadorposicion
+                End
+
+                Send RefrescarPosicionesJugador
+            End_Procedure
+        End_Object
+
+
+        Object oBtnVolverJugador is a cWebButton
+            Set piColumnSpan to 6
+            Set piColumnIndex to 6
+            Set psCaption to "Volver al jugador"
+
+            Procedure OnClick
+                Send NavigateClose Self
+            End_Procedure
+        End_Object
+
+    End_Object
+
+
+    Function ExisteRelacion Integer iJugadorID Integer iPosicionID Returns Boolean
+        Boolean bExiste
+
+        Move False to bExiste
+
+        Clear jugadorposicion
+
+        Repeat
+            Find gt jugadorposicion by 1
+
+            If (Found) Begin
+                If ((jugadorposicion.JugadorID = iJugadorID) and (jugadorposicion.PosicionID = iPosicionID)) Begin
+                    Move True to bExiste
+                End
+            End
+        Until ((not(Found)) or bExiste)
+
+        Function_Return bExiste
+    End_Function
+
+
+    Procedure RefrescarTodasPosiciones
+        Send Clear of oposicionTodas_DD
+        Send Find of oposicionTodas_DD FIRST_RECORD 1
+        Send GridRefresh of oListaTodasPosiciones
+    End_Procedure
+
+
+    Procedure RefrescarPosicionesJugador
+        Send Rebuild_Constraints of ojugadorposicion_DD
+        Send Clear of ojugadorposicion_DD
+        Send Find of ojugadorposicion_DD FIRST_RECORD 1
+        Send GridRefresh of oListaPosicionesJugador
+    End_Procedure
+
+
+    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
+        String sJugadorID
+        Integer iJugadorID
+
+        Forward Send OnNavigateForward NavigateData hoInvokingView hoInvokingObject
+
+        Get NamedValueGet NavigateData.NamedValues "JugadorID" to sJugadorID
+        Move sJugadorID to iJugadorID
+
+        WebSet piJugadorActual of oSelectJugadorPosicion to iJugadorID
+
+        If (iJugadorID = 0) Begin
+            Send UserError "No se ha recibido el jugador actual."
+            Procedure_Return
+        End
+
+        Send RefrescarTodasPosiciones
+        Send RefrescarPosicionesJugador
+    End_Procedure
+
+End_Object
